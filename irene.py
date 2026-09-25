@@ -3,7 +3,6 @@ import os
 import sys
 import torch
 import pandas as pd
-from skimage import io, transform
 import numpy as np
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
@@ -13,8 +12,7 @@ import pickle
 import pandas as pd
 from PIL import Image
 import argparse
-from apex import amp
-from sklearn.metrics.ranking import roc_auc_score
+from sklearn.metrics import roc_auc_score
 from models.modeling_irene import IRENE, CONFIGS
 from tqdm import tqdm
 import argparse
@@ -99,8 +97,8 @@ def test(args):
 
     testloader = DataLoader(test_data, batch_size=args.BSZ, shuffle=False, num_workers=16, pin_memory=True)
 
-    optimizer_irene = torch.optim.AdamW(irene.parameters(), lr=3e-5, weight_decay=0.01)
-    irene, optimizer_irene = amp.initialize(irene.cuda(), optimizer_irene, opt_level="O1")
+    # NVIDIA apex AMP (deprecated) replaced by native torch.autocast below
+    irene = irene.cuda()
 
     irene = torch.nn.DataParallel(irene)
 
@@ -120,7 +118,8 @@ def test(args):
             age = demo[:, :, 0].view(-1, 1, 1).cuda(non_blocking=True).float()
             imgs = imgs.cuda(non_blocking=True)
             labels = labels.cuda(non_blocking=True)
-            preds = irene(imgs, cc, lab, sex, age)[0]
+            with torch.autocast('cuda', dtype=torch.float16):
+                preds = irene(imgs, cc, lab, sex, age)[0].float()
 
             probs = torch.sigmoid(preds)
             outGT = torch.cat((outGT, labels), 0)

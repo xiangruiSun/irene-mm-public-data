@@ -1,0 +1,26 @@
+{
+ "source_only": 0.7400981580466229,
+ "source_only@mixed": 0.48681201717967987,
+ "view_only": 0.6013444705675003,
+ "view_only@mixed": 0.5703642484620353,
+ "structured_all": 0.7372852072849002,
+ "structured_all@mixed": 0.6695187812914167,
+ "tfidf_masked": 0.830816803138297,
+ "tfidf_masked@mixed": 0.7781796502351997,
+ "tfidf_raw": 0.8357982972649943,
+ "tfidf_raw@mixed": 0.7796828890261663,
+ "mixed_source_hosts": [
+  "radiopaedia.org",
+  "eurorad.org"
+ ],
+ "n_mixed_source": 395,
+ "mixed_label_counts": [
+  154,
+  16,
+  73,
+  31,
+  94,
+  18,
+  9
+ ]
+}

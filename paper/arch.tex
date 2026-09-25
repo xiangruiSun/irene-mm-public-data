@@ -1,0 +1,56 @@
+% IRENE-MM architecture (TikZ). Included from main.tex.
+\begin{tikzpicture}[
+  font=\scriptsize,
+  box/.style={draw=black!70, rounded corners=2pt, minimum height=0.55cm, align=center, inner sep=2pt},
+  tok/.style={draw=black!60, minimum width=0.16cm, minimum height=0.32cm, inner sep=0pt},
+  arr/.style={-{Stealth[length=1.6mm]}, black!70, line width=0.5pt},
+  lab/.style={font=\scriptsize\itshape, text=black!65},
+]
+% ---------------- inputs
+\node[box, fill=blue!6, minimum width=1.9cm] (img) at (0,0) {chest X-ray\\224$\times$224};
+\node[box, fill=orange!8, minimum width=1.9cm] (txt) at (0,-1.5) {clinical note\\([DX]-masked)};
+\node[box, fill=green!7, minimum width=1.9cm] (tab) at (0,-2.75) {age, sex, vitals,\\labs, view (+mask)};
+
+% ---------------- tokenisers
+\node[box, fill=blue!6, minimum width=2.0cm] (cnn) at (2.55,0) {frozen CXR\\DenseNet-121};
+\node[box, fill=orange!8, minimum width=2.0cm] (wv) at (2.55,-1.5) {tokenise +\\word vectors};
+\node[box, fill=green!7, minimum width=2.0cm] (lin) at (2.55,-2.75) {Linear(1$\to$d)\\+ missing emb.};
+\draw[arr] (img) -- (cnn); \draw[arr] (txt) -- (wv); \draw[arr] (tab) -- (lin);
+
+% token strips
+\foreach \i in {0,...,5} {\node[tok, fill=blue!25] at (4.1+\i*0.19,0) {};}
+\foreach \i in {0,...,5} {\node[tok, fill=orange!35] at (4.1+\i*0.19,-1.5) {};}
+\foreach \i in {0,...,5} {\node[tok, fill=green!35] at (4.1+\i*0.19,-2.75) {};}
+\node[lab] at (4.58,0.38) {image tokens $\mathbf{X}_I$};
+\node[lab] at (4.58,-1.12) {note tokens};
+\node[lab] at (4.58,-3.13) {structured tokens};
+\draw[arr] (cnn) -- (3.98,0); \draw[arr] (wv) -- (3.98,-1.5); \draw[arr] (lin) -- (3.98,-2.75);
+\draw[decorate, decoration={brace, amplitude=3pt, mirror}, black!60] (5.25,-3.0) -- (5.25,-1.3)
+  node[midway, right=1pt, lab, align=left, font=\tiny\itshape] {clinical\\stream $\mathbf{X}_C$};
+
+% ---------------- dual-stream blocks
+\node[box, fill=black!4, minimum width=2.9cm, minimum height=3.35cm] (dual) at (8.3,-1.2) {};
+\node[font=\scriptsize\bfseries, fill=black!4] at (8.3,0.2) {$k\times$ dual-stream block};
+\node[box, fill=blue!10, minimum width=0.95cm] (si) at (7.55,-0.3) {Self$_I$};
+\node[box, fill=orange!12, minimum width=0.9cm] (sc) at (7.55,-2.1) {Self$_C$};
+\node[box, fill=purple!10, minimum width=1.2cm] (ci) at (9.0,-0.3) {Cross$_{I\leftarrow C}$};
+\node[box, fill=purple!10, minimum width=1.2cm] (cc) at (9.0,-2.1) {Cross$_{C\leftarrow I}$};
+\draw[arr, purple!60, densely dashed] (8.85,-1.8) -- (8.85,-0.62);
+\draw[arr, purple!60, densely dashed] (9.15,-0.62) -- (9.15,-1.8);
+\node[lab, align=center, font=\tiny] at (7.75,-1.2) {combine by\\\texttt{cross\_mode}};
+\draw[arr] (5.3,0) -- (7.0,-0.3);
+\draw[arr] (6.35,-2.1) -- (7.0,-2.1);
+
+% ---------------- alignment
+\node[box, fill=teal!8, minimum width=1.75cm] (align) at (8.3,-3.75) {CLIP / SigLIP\\$\mathcal{L}_{\text{align}}$ on $z_I, z_T$};
+\draw[arr, teal!70!black] (8.3,-2.88) -- (align);
+\node[lab, font=\tiny, align=right, anchor=east] at (6.9,-3.75) {unimodal pass\\(cross disabled)};
+
+% ---------------- joint blocks
+\node[box, fill=black!4, minimum width=1.6cm, minimum height=1.5cm, align=center] (joint) at (11.35,-1.2) {$(L{-}k)\times$\\joint self-\\attention\\on $[\mathbf{X}_I;\mathbf{X}_C]$};
+\draw[arr] (9.75,-0.3) -- (10.55,-0.9); \draw[arr] (9.75,-2.1) -- (10.55,-1.5);
+\node[box, fill=red!6, minimum width=1.6cm] (head) at (11.35,-2.85) {masked mean\\pool + linear};
+\draw[arr] (joint) -- (head);
+\node[box, minimum width=1.6cm] (out) at (11.35,-3.9) {7 diagnoses\\$\mathcal{L}_{\text{BCE}}$};
+\draw[arr] (head) -- (out);
+\end{tikzpicture}

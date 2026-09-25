@@ -1,0 +1,33 @@
+\multicolumn{6}{l}{\textit{Fusion position}} \\
+\quad k=0 (early) & 0.784$\pm$0.018 & 0.384$\pm$0.018 & 0.621$\pm$0.013 & -- & 3 \\
+\quad k=1 & 0.780$\pm$0.006 & 0.352$\pm$0.017 & 0.566$\pm$0.000 & -- & 2 \\
+\quad k=2 (IRENE) & 0.785$\pm$0.002 & 0.369$\pm$0.011 & 0.588$\pm$0.003 & -- & 3 \\
+\quad k=3 & 0.770$\pm$0.009 & 0.354$\pm$0.012 & 0.571$\pm$0.006 & -- & 2 \\
+\quad k=4 & 0.776$\pm$0.015 & 0.347$\pm$0.028 & 0.583$\pm$0.008 & -- & 2 \\
+\quad k=6, bidirectional & 0.741$\pm$0.008 & 0.323$\pm$0.005 & 0.586$\pm$0.022 & -- & 2 \\
+\quad k=6, no cross-attn (late) & 0.794$\pm$0.010 & 0.399$\pm$0.013 & 0.655$\pm$0.019 & -- & 3 \\
+\midrule
+\multicolumn{6}{l}{\textit{Attention structure (k=2)}} \\
+\quad self only (no exchange) & 0.779$\pm$0.002 & 0.357$\pm$0.028 & 0.611$\pm$0.001 & -- & 2 \\
+\quad image$\to$text & 0.785$\pm$0.005 & 0.383$\pm$0.004 & 0.582$\pm$0.019 & -- & 2 \\
+\quad text$\to$image & 0.784$\pm$0.008 & 0.361$\pm$0.008 & 0.594$\pm$0.006 & -- & 2 \\
+\quad co-attention (cross only) & 0.752$\pm$0.005 & 0.324$\pm$0.006 & 0.591$\pm$0.006 & -- & 2 \\
+\quad gated cross-attn & 0.777$\pm$0.026 & 0.371$\pm$0.014 & 0.587$\pm$0.012 & -- & 2 \\
+\quad IRENE (self+cross)/2 & 0.785$\pm$0.002 & 0.369$\pm$0.011 & 0.588$\pm$0.003 & -- & 3 \\
+\midrule
+\multicolumn{6}{l}{\textit{Alignment objective (k=2)}} \\
+\quad none & 0.785$\pm$0.002 & 0.369$\pm$0.011 & 0.588$\pm$0.003 & -- & 3 \\
+\quad CLIP $\lambda$=0.1 & 0.739$\pm$0.004 & 0.297$\pm$0.033 & 0.618$\pm$0.025 & 10.9 & 2 \\
+\quad CLIP $\lambda$=0.5 & 0.726$\pm$0.003 & 0.261$\pm$0.001 & 0.617$\pm$0.011 & 11.6 & 2 \\
+\quad CLIP $\lambda$=1.0 & 0.717$\pm$0.000 & 0.256$\pm$0.004 & 0.620$\pm$0.006 & 10.7 & 2 \\
+\quad SigLIP $\lambda$=0.1 & 0.765$\pm$0.014 & 0.336$\pm$0.022 & 0.584$\pm$0.016 & 9.1 & 2 \\
+\quad SigLIP $\lambda$=0.5 & 0.746$\pm$0.018 & 0.287$\pm$0.020 & 0.616$\pm$0.001 & 10.5 & 2 \\
+\quad SigLIP $\lambda$=1.0 & 0.741$\pm$0.005 & 0.281$\pm$0.017 & 0.624$\pm$0.018 & 9.7 & 2 \\
+\quad CLIP $\lambda$=0.5, early (k=0) & 0.758$\pm$0.006 & 0.322$\pm$0.002 & 0.648$\pm$0.006 & 12.1 & 2 \\
+\quad CLIP $\lambda$=0.5, late (k=6) & 0.793$\pm$0.004 & 0.322$\pm$0.010 & 0.699$\pm$0.005 & 13.1 & 2 \\
+\midrule
+\multicolumn{6}{l}{\textit{Note input and training (k=2)}} \\
+\quad default (word tokens + doc token, masked) & 0.785$\pm$0.002 & 0.369$\pm$0.011 & 0.588$\pm$0.003 & -- & 3 \\
+\quad without document token & 0.738$\pm$0.013 & 0.299$\pm$0.016 & 0.599$\pm$0.010 & -- & 2 \\
+\quad raw notes (diagnosis terms visible) & 0.794$\pm$0.008 & 0.387$\pm$0.020 & 0.587$\pm$0.008 & -- & 2 \\
+\quad modality dropout $p$=0.3 & 0.772$\pm$0.023 & 0.339$\pm$0.016 & 0.736$\pm$0.011 & -- & 2 \\

@@ -1,0 +1,156 @@
+{
+ "host": {
+  "cpu_count": 2,
+  "cuda": false,
+  "torch": "2.14.0+cu130",
+  "platform": "Linux-6.18.44-fc-v37-x86_64-with-glibc2.39"
+ },
+ "cache_build_sec": 19.217453002929688,
+ "loader": [
+  {
+   "dataset": "decode",
+   "workers": 0,
+   "pin_memory": false,
+   "persistent": false,
+   "samples_per_sec": 45.55180719129682
+  },
+  {
+   "dataset": "decode",
+   "workers": 0,
+   "pin_memory": true,
+   "persistent": false,
+   "samples_per_sec": 45.68338499122915
+  },
+  {
+   "dataset": "decode",
+   "workers": 1,
+   "pin_memory": false,
+   "persistent": false,
+   "samples_per_sec": 44.9652109627422
+  },
+  {
+   "dataset": "decode",
+   "workers": 1,
+   "pin_memory": false,
+   "persistent": true,
+   "samples_per_sec": 45.80091617317063
+  },
+  {
+   "dataset": "decode",
+   "workers": 1,
+   "pin_memory": true,
+   "persistent": false,
+   "samples_per_sec": 46.39687877591909
+  },
+  {
+   "dataset": "decode",
+   "workers": 1,
+   "pin_memory": true,
+   "persistent": true,
+   "samples_per_sec": 45.18914643621263
+  },
+  {
+   "dataset": "decode",
+   "workers": 2,
+   "pin_memory": false,
+   "persistent": false,
+   "samples_per_sec": 83.56441575557088
+  },
+  {
+   "dataset": "decode",
+   "workers": 2,
+   "pin_memory": false,
+   "persistent": true,
+   "samples_per_sec": 83.8585398946195
+  },
+  {
+   "dataset": "decode",
+   "workers": 2,
+   "pin_memory": true,
+   "persistent": false,
+   "samples_per_sec": 82.70773599299645
+  },
+  {
+   "dataset": "decode",
+   "workers": 2,
+   "pin_memory": true,
+   "persistent": true,
+   "samples_per_sec": 84.87264492919729
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 0,
+   "pin_memory": false,
+   "persistent": false,
+   "samples_per_sec": 6499.481729684067
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 0,
+   "pin_memory": true,
+   "persistent": false,
+   "samples_per_sec": 7324.251797775973
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 1,
+   "pin_memory": false,
+   "persistent": false,
+   "samples_per_sec": 2264.5720898079126
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 1,
+   "pin_memory": false,
+   "persistent": true,
+   "samples_per_sec": 2479.6256460995905
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 1,
+   "pin_memory": true,
+   "persistent": false,
+   "samples_per_sec": 2258.0424228970924
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 1,
+   "pin_memory": true,
+   "persistent": true,
+   "samples_per_sec": 2385.5651727420304
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 2,
+   "pin_memory": false,
+   "persistent": false,
+   "samples_per_sec": 2867.5112664266508
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 2,
+   "pin_memory": false,
+   "persistent": true,
+   "samples_per_sec": 3926.8679318886657
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 2,
+   "pin_memory": true,
+   "persistent": false,
+   "samples_per_sec": 3150.5985053065433
+  },
+  {
+   "dataset": "mmap_cache",
+   "workers": 2,
+   "pin_memory": true,
+   "persistent": true,
+   "samples_per_sec": 3771.3924280049314
+  }
+ ],
+ "train_fp32_samples_per_sec": 11.72639643589796,
+ "train_amp_samples_per_sec": 15.53001523036394,
+ "amp_dtype": "bfloat16",
+ "ddp_world2_global_samples_per_sec": 14.689341866539724,
+ "ddp_world2_threads_per_rank": 1
+}

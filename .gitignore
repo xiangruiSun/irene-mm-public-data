@@ -1,0 +1,15 @@
+data/raw/
+data/processed/*
+!data/processed/stats.json
+__pycache__/
+*.pyc
+.DS_Store
+results/ddp_check/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz

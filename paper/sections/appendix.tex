@@ -1,0 +1,36 @@
+\section{Reproducibility details}
+\label{app:repro}
+
+\paragraph{Code.} Everything is in the repository:
+\texttt{data/prepare.py} (cohort, labels, text cleaning, masking, structured features, folds),
+\texttt{data/features.py} (frozen CXR DenseNet tokens with cached augmentations; word-vector note tokens),
+\texttt{models/irene\_mm.py} (IRENE-MM), \texttt{train.py} (CV training with AMP/DDP/W\&B),
+\texttt{scripts/run\_experiments.py} (the full grid),
+\texttt{scripts/classical\_baselines.py}, \texttt{scripts/benchmark\_throughput.py} and
+\texttt{scripts/make\_figures.py} (all figures, tables and every number quoted in the text,
+emitted as LaTeX macros). The original IRENE files in \texttt{models/} and \texttt{irene.py} are
+kept, with the deprecated \texttt{apex} AMP replaced by \texttt{torch.autocast}.
+
+\paragraph{Pretrained components.} Image: \texttt{torchxrayvision} DenseNet-121
+\texttt{densenet121-res224-all}, trained on NIH ChestX-ray14, CheXpert, MIMIC-CXR, PadChest,
+RSNA Pneumonia (Kaggle), Google and OpenI radiographs \citep{cohen2022torchxrayvision}; none of these
+is the evaluation dataset, but overlap of individual source images cannot be excluded.
+Text: spaCy \texttt{en\_core\_web\_md} 300-d vectors (20k keys). No component was pretrained on the
+evaluation notes.
+
+\paragraph{Hyper-parameters.} $L{=}6$, $d{=}128$, 4 heads, MLP 256, dropout and attention dropout
+0.1, image grid $4{\times}4$ (16 tokens), at most \MaxTxt{} word tokens plus one 128-d TF-IDF/SVD
+document token fitted inside each training fold, 11 structured tokens plus age and sex tokens,
+AdamW (lr $3{\times}10^{-4}$, wd 0.05), one-cycle schedule with 10\% warm-up, batch 32,
+$\le$25 epochs, early stopping on validation BCE with patience 5, positive-class weights
+$\sqrt{n_{\text{neg}}/n_{\text{pos}}}$ in the BCE, gradient clipping 1.0, CLIP temperature
+initialised at 0.07, SigLIP $t{=}10$, $b{=}{-}10$ \citep{zhai2023siglip}. No per-configuration tuning
+was done. However, the recipe was revised once: a first full cross-validation pilot of the eight
+main configurations (kept in \texttt{results/runs\_v0\_pilot/}) showed that the note branch was
+the bottleneck, and we then added the document token and the class-balanced loss and reran
+everything. Because that decision was informed by out-of-fold results, the reported estimates
+are slightly optimistic in the usual ``one round of model development'' sense
+(\cref{sec:limits}).
+
+\paragraph{Compute.} All \NRuns{} configurations (\NFoldRuns{} fold-level trainings) ran in
+\CPUHours{} CPU-hours on a 2-core virtual machine without a GPU.

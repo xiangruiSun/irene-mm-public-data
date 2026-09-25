@@ -1,0 +1,58 @@
+%============================================================
+\section{Discussion}
+%============================================================
+\paragraph{What matters for IRENE-style fusion at small scale.}
+Three findings are consistent across metrics and seeds.
+(1)~\emph{Fusion helps, and the text representation decides by how much.} Adding the note
+and structured data to the image raises macro AUROC by about 0.09--0.10. However, a weak note
+encoder (static word vectors alone) wiped out most of this gain. A document-level token
+recovered it.
+(2)~\emph{Keep intra-modal self-attention, and limit cross-attention to early layers.}
+IRENE's (self+cross)/2 blocks followed by joint self-attention are on par with early and
+late fusion. Cross-attention without self-attention, or cross-attention at every layer, is
+clearly worse. On a few hundred patients, extra cross-modal capacity causes overfitting.
+(3)~\emph{Contrastive alignment is not free.} As an auxiliary loss on hundreds of pairs,
+CLIP and SigLIP hurt a mid-fusion model and are neutral for a dual encoder. The benefit reported
+for medical vision--language models comes from large-scale pre-training, which our setting
+lacks. A natural next step is to initialise the two streams from a publicly released
+radiograph--report encoder (e.g.\ BiomedCLIP or CXR-CLIP) instead of learning the alignment
+on the target data.
+
+\paragraph{What the headline numbers hide.} The dataset is public, multimodal and, with IRENE's
+input types, a natural testbed. It is also strongly confounded by source. A source-only probe
+matches the fusion transformers, and a linear bag-of-words model on the masked notes beats all
+of them. The de-confounded subset preserves the ranking of the fusion strategies, which supports
+the architectural conclusions. The absolute numbers, however, should not be read as clinical
+diagnostic accuracy.
+
+%============================================================
+\section{Limitations}
+\label{sec:limits}
+%============================================================
+\begin{itemize}
+\item \textbf{Scale.} \NImages{} images from \NPatients{} patients, and three or fewer positives
+per test fold for some classes. We pool out-of-fold predictions and report bootstrap intervals.
+Many ablation differences are nevertheless within noise, and the ablations use 2 seeds.
+\item \textbf{Compute.} No GPU was available. The model is a narrow IRENE ($d{=}128$, 6 layers,
+16 image tokens from a frozen CNN) rather than the original ViT-B/16 initialised from ImageNet
+weights, and the text encoder is not a clinical BERT. The recipe was revised once, after a full
+cross-validation pilot showed that the note branch was the bottleneck (it added the document token
+and class-balanced loss). This single round of development used out-of-fold results, so a fresh
+external test set would be needed for an unbiased estimate.
+\item \textbf{Data.} The labels come from publication metadata, the notes are written by case
+authors rather than being contemporaneous EHR text, and the source confounding described in
+\cref{sec:leak} limits clinical interpretation. The engineering code supports large sharded
+image--text corpora and multi-GPU training, but this study did not exercise that scale.
+\end{itemize}
+
+%============================================================
+\section{Conclusion}
+%============================================================
+We provide an open, end-to-end re-implementation of the IRENE multimodal transformer on
+public data. It includes a documented image--text--structured pipeline, a modern PyTorch
+training stack, a single model that covers early, mid and late fusion, six attention structures
+and two contrastive objectives, and a controlled study with patient-grouped cross-validation.
+The results support IRENE's core design: shallow bidirectional attention that retains
+self-attention, followed by joint layers. They also show that a competent text representation,
+robustness to missing notes and awareness of dataset confounding matter more than the
+particular choice of fusion operator.

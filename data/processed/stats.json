@@ -1,0 +1,104 @@
+{
+  "raw_rows": 950,
+  "xray_rows": 866,
+  "labelled_rows": 782,
+  "patients": 424,
+  "label_counts": {
+    "COVID-19": 504,
+    "Viral (other)": 42,
+    "Bacterial": 73,
+    "Fungal": 32,
+    "Pneumonia (other/unspec.)": 95,
+    "Tuberculosis": 18,
+    "No Finding": 18
+  },
+  "fold_label_counts": {
+    "0": {
+      "COVID-19": 101,
+      "Viral (other)": 9,
+      "Bacterial": 14,
+      "Fungal": 7,
+      "Pneumonia (other/unspec.)": 19,
+      "Tuberculosis": 4,
+      "No Finding": 3
+    },
+    "1": {
+      "COVID-19": 101,
+      "Viral (other)": 8,
+      "Bacterial": 15,
+      "Fungal": 6,
+      "Pneumonia (other/unspec.)": 19,
+      "Tuberculosis": 3,
+      "No Finding": 4
+    },
+    "2": {
+      "COVID-19": 101,
+      "Viral (other)": 8,
+      "Bacterial": 14,
+      "Fungal": 7,
+      "Pneumonia (other/unspec.)": 19,
+      "Tuberculosis": 4,
+      "No Finding": 3
+    },
+    "3": {
+      "COVID-19": 101,
+      "Viral (other)": 8,
+      "Bacterial": 15,
+      "Fungal": 6,
+      "Pneumonia (other/unspec.)": 19,
+      "Tuberculosis": 3,
+      "No Finding": 4
+    },
+    "4": {
+      "COVID-19": 100,
+      "Viral (other)": 9,
+      "Bacterial": 15,
+      "Fungal": 6,
+      "Pneumonia (other/unspec.)": 19,
+      "Tuberculosis": 4,
+      "No Finding": 4
+    }
+  },
+  "with_notes": 683,
+  "note_words_median": 52.0,
+  "masked_terms_total": 818,
+  "notes_with_masked_term": 354,
+  "missing_rate": {
+    "age": 0.1867007613182068,
+    "offset": 0.26342713832855225,
+    "temperature": 0.905370831489563,
+    "pO2_saturation": 0.8682864308357239,
+    "leukocyte_count": 0.9808183908462524,
+    "neutrophil_count": 0.9693094491958618,
+    "lymphocyte_count": 0.9539641737937927,
+    "sex": 0.07928389310836792
+  },
+  "views": {
+    "PA": 332,
+    "AP": 204,
+    "AP Supine": 162,
+    "L": 84
+  },
+  "numeric_fields": [
+    "age",
+    "offset",
+    "temperature",
+    "pO2_saturation",
+    "leukocyte_count",
+    "neutrophil_count",
+    "lymphocyte_count",
+    "view=PA",
+    "view=AP",
+    "view=AP Supine",
+    "view=L"
+  ],
+  "labels": [
+    "COVID-19",
+    "Viral (other)",
+    "Bacterial",
+    "Fungal",
+    "Pneumonia (other/unspec.)",
+    "Tuberculosis",
+    "No Finding"
+  ]
+}

@@ -1,0 +1,187 @@
+%============================================================
+\section{Results}
+\label{sec:results}
+%============================================================
+\begin{table*}[t]
+\centering
+\caption{Main comparison (5-fold patient-grouped CV, pooled out-of-fold predictions on all
+\NImages{} images; mean$\pm$s.d.\ over 3 seeds, or 2 seeds for the contrastive rows). The 95\% CI is a
+patient-level bootstrap of the seed-averaged predictions. F1 and accuracy use the arg-max class.
+Parameters are trainable parameters, excluding the frozen DenseNet.}
+\label{tab:main}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Model & macro AUROC & 95\% CI & macro AUPRC & macro F1 & Accuracy & Params (M)\\
+\midrule
+\tabinput{tables/main.tex}
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Fusion helps, provided the text branch is competent}
+\Cref{tab:main} and \cref{fig:main} summarise the main comparison. Images alone reach
+\AUC{img_only} macro AUROC. Structured data alone reaches \AUC{tab_only}, the masked note alone
+\AUC{txt_only}, and note plus structured data \AUC{txt_tab_only}. All three fusion paradigms that
+use every modality do better: early fusion \AUC{early_fusion}, IRENE mid fusion (k=2)
+\AUC{irene_k2} and late fusion \AUC{late_fusion}. A patient-level paired bootstrap
+(\cref{tab:sig}) finds IRENE clearly better than image-only (\SIG{img_only}{diff}, 95\% CI
+[\SIG{img_only}{lo}, \SIG{img_only}{hi}]). The gain over note + structured is smaller and
+borderline (\SIG{txt_tab_only}{diff}, CI [\SIG{txt_tab_only}{lo}, \SIG{txt_tab_only}{hi}],
+$p{=}$\SIG{txt_tab_only}{p}). The differences among the three fusion paradigms are within the
+bootstrap uncertainty (IRENE vs.\ early: $p{=}$\SIG{early_fusion}{p}; vs.\ late: $p{=}$\SIG{late_fusion}{p}). Early fusion is also the least stable across seeds
+(s.d.\ \AUCsd{early_fusion} against \AUCsd{irene_k2} for IRENE).
+
+One engineering detail mattered more than any architectural choice. In a pilot run, the
+note branch was built only from static word vectors, truncated to \MaxTxt{} tokens and trained
+from scratch on about 500 notes. The note-only model then reached only about 0.58, and fused models
+about 0.71--0.74. A single \emph{document token} fixes this: a TF-IDF$\to$SVD embedding
+of the entire note, fitted inside each training fold, plays the role of IRENE's BERT sentence
+features. With it and class-balanced BCE, the note-only model rises to \AUC{txt_only} and the
+fused models to about 0.78--0.79. \Cref{tab:ablation} isolates the document token
+(\AUC{irene_k2_nodoc} without it versus \AUC{irene_k2} with it).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/main_results.pdf}
+\caption{Macro AUROC by input and fusion paradigm. Blue: one or two modalities.
+Orange: all three modalities fused. Error bars: s.d.\ over 3 seeds.}
+\label{fig:main}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Patient-level paired bootstrap (1{,}000 resamples) of the macro-AUROC difference
+between IRENE (k=2) and other models, using seed-averaged out-of-fold predictions.}
+\label{tab:sig}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+IRENE (k=2) & $\Delta$AUROC & 95\% CI & $p$\\
+\midrule
+\tabinput{tables/significance.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table*}[t]
+\centering
+\caption{Ablations (pooled-OOF macro AUROC and AUPRC, mean$\pm$s.d.\ over seeds). ``No note''
+re-evaluates the same model with the note removed at test time. R@5 is image$\to$note retrieval
+in \% (chance $\approx$4\%).}
+\label{tab:ablation}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Variant & macro AUROC & macro AUPRC & AUROC, no note & R@5 & seeds\\
+\midrule
+\tabinput{tables/ablation.tex}
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Where to fuse}
+\Cref{fig:fusion} varies the number $k$ of dual-stream blocks with IRENE's bidirectional
+attention, keeping depth fixed at $L{=}6$. One or two blocks of cross-modal attention followed
+by joint self-attention (k=1: \AUC{irene_k1}; k=2: \AUC{irene_k2}) perform as well as early
+fusion. Accuracy then falls as fusion is delayed with cross-attention active (k=3: \AUC{irene_k3};
+k=4: \AUC{irene_k4}). It collapses when all six blocks are bidirectional (k=6: \AUC{irene_k6}).
+Yet the same depth \emph{without} cross-attention, i.e.\ plain late fusion, is the best model
+(\AUC{late_fusion}). The pattern suggests that, on a few hundred training patients, the
+extra cross-attention parameters (\cref{tab:main}) and the repeated mixing of a noisy note
+into the image stream cause overfitting rather than useful alignment. IRENE's choice of shallow
+cross-modal attention followed by joint layers is a sensible point on this curve. The
+original paper, with about 10$\times$ more patients, did not report this sweep.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fusion_position.pdf}
+\caption{Fusion position. $k$ dual-stream IRENE blocks are followed by $6-k$ joint blocks;
+$k{=}0$ is early fusion. Orange square: $k{=}6$ without cross-attention (late fusion). Dotted
+line: image only. Shaded bands and error bars: $\pm$1 s.d.\ over seeds.}
+\label{fig:fusion}
+\end{figure*}
+
+\subsection{How the streams attend to each other}
+\Cref{fig:attn} fixes $k{=}2$ and changes only the combination rule. IRENE's average of self-
+and cross-attention (\AUC{irene_k2}) matches the unidirectional variants (image$\to$text
+\AUC{attn_i2t}, text$\to$image \AUC{attn_t2i}) and the no-exchange control (\AUC{attn_none}).
+It clearly beats ViLBERT-style co-attention, which drops self-attention in the dual-stream
+blocks (\AUC{attn_bi_cross}). Flamingo-style tanh gates (\AUC{attn_gated}) are the least
+stable across seeds (s.d.\ \AUCsd{attn_gated}). The practical conclusion is that each stream
+must keep its intra-modal self-attention. Cross-attention in the first blocks is not harmful,
+but at this data scale the joint self-attention layers can recover most of what it provides.
+\Cref{fig:attn}b repeats the evaluation with the note removed. All variants fall to 0.58--0.61,
+which shows that the models rely heavily on the note whatever the attention structure.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/attention_structure.pdf}
+\caption{Attention structure inside the $k{=}2$ dual-stream blocks. (a) Full input.
+(b) The same trained models evaluated with the clinical note removed.}
+\label{fig:attn}
+\end{figure*}
+
+\subsection{Image--text contrastive learning}
+\Cref{fig:contrastive} adds a CLIP or SigLIP loss on unimodal pooled embeddings. For IRENE
+(k=2), both objectives \emph{lower} diagnostic AUROC, and more so as $\lambda$ grows (CLIP:
+\AUC{clip_l0.1}, \AUC{clip_l0.5}, \AUC{clip_l1.0}; SigLIP: \AUC{siglip_l0.1}, \AUC{siglip_l0.5},
+\AUC{siglip_l1.0}). SigLIP degrades more gracefully than CLIP. Retrieval is above chance but
+modest (R@5 \RFIVE{clip_l0.5}\% for CLIP at $\lambda{=}0.5$, against about 4\% for chance). The
+picture changes for late fusion. The two encoders are then separate, so the model is a CLIP-style
+dual encoder with a classification head. Alignment leaves AUROC unchanged (\AUC{late_clip_l0.5}
+against \AUC{late_fusion}) and gives the best retrieval (R@5 \RFIVE{late_clip_l0.5}\%). In the
+early-fusion model the aligned embeddings sit at the token level, and alignment reaches
+\AUC{early_clip_l0.5}.
+
+Two properties of this dataset explain the weak benefit. First, there are only about 500
+training pairs per fold, and many images of the same patient share one note, so the effective
+number of distinct pairs is small. Second, the notes describe history and radiographic findings
+in heterogeneous styles, with no one-to-one correspondence to the image. Contrastive
+pre-training works at the scale of hundreds of thousands to millions of report pairs
+\citep{zhang2022convirt,you2023cxrclip,zhang2023biomedclip}. As an auxiliary loss on hundreds
+of pairs, it competes with the supervised objective for the shared parameters in the
+dual-stream blocks, which is why it hurts mid fusion but not a dual encoder.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/contrastive.pdf}
+\caption{Contrastive alignment. (a) Diagnostic macro AUROC as a function of the alignment
+weight $\lambda$ ($\lambda{=}0$ is IRENE without alignment). (b) Image$\to$note Recall@5 on
+the test folds.}
+\label{fig:contrastive}
+\end{figure*}
+
+\subsection{Per-class behaviour}
+\Cref{fig:perclass,fig:roc} break results down by class. Compared with the image-only model, fusion gains the most for
+COVID-19 (IRENE \PC{irene_k2}{0} vs.\ \PC{img_only}{0}), bacterial pneumonia
+(\PC{irene_k2}{2} vs.\ \PC{img_only}{2}) and unspecified pneumonia (\PC{irene_k2}{4} vs.\
+\PC{img_only}{4}). The note-based models are strong on exactly these classes (note + structured:
+\PC{txt_tab_only}{0}, \PC{txt_tab_only}{2}, \PC{txt_tab_only}{4}). The image contributes more for
+fungal pneumonia (image-only \PC{img_only}{3} vs.\ note + structured \PC{txt_tab_only}{3}), where
+fusion combines both (\PC{irene_k2}{3}). Tuberculosis and no finding (18 images each) remain the
+hardest and noisiest classes for every model.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/per_class.pdf}
+\caption{Per-class AUROC (pooled OOF, mean over seeds).}
+\label{fig:perclass}
+\end{figure}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/roc.pdf}
+\caption{Pooled out-of-fold ROC curves (seed-averaged predictions) for three classes;
+AUROC in the legend.}
+\label{fig:roc}
+\end{figure*}
+
+\subsection{Label leakage and dataset confounding}
+\label{sec:leak}
+\input{sections/leak.tex}
+
+\subsection{Throughput of the training stack}
+\label{sec:throughput}
+\input{sections/throughput.tex}

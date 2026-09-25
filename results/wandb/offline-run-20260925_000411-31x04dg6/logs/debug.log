@@ -1,0 +1,23 @@
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_setup.py:_flush():81] Current SDK version is 0.30.0
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_setup.py:_flush():81] Configure stats pid to 5367
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_init.py:setup_run_log_directory():739] Logging user logs to results/wandb/offline-run-20260925_000411-31x04dg6/logs/debug.log
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_init.py:setup_run_log_directory():740] Logging internal logs to results/wandb/offline-run-20260925_000411-31x04dg6/logs/debug-internal.log
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_init.py:init():783] calling init triggers
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_init.py:init():788] wandb.init called with sweep_config: {}
+config: {'name': 'ddp_check', 'processed': 'data/processed', 'out': 'results/ddp_check', 'folds': [0], 'seeds': [0], 'epochs': 3, 'patience': 5, 'bs': 32, 'lr': 0.0003, 'wd': 0.05, 'lam': 0.0, 'text_field': 'masked', 'workers': 0, 'threads': 1, 'amp': True, 'wandb': 'offline', 'eval_missing_text': False, 'pos_weight': 'sqrt', 'select': 'bce', 'img_grid': 4, 'max_txt': 48, 'hidden': 128, 'heads': 4, 'layers': 6, 'mlp': 256, 'dropout': 0.1, 'attn_dropout': 0.1, 'fusion_layer': 2, 'cross_mode': 'bi_avg', 'contrastive': 'none', 'proj_dim': 128, 'use_img': True, 'use_txt': True, 'use_tab': True, 'modality_dropout': 0.0, 'doc_dim': 128, 'img_in': 1024, 'n_img_tok': 16, 'txt_in': 303, 'n_lab': 11, 'num_classes': 7, 'pixel_input': False, 'patch': 16, '_wandb': {}}
+2026-09-25 00:04:11,124 INFO    MainThread:5367 [wandb_init.py:init():831] starting backend
+2026-09-25 00:04:11,328 INFO    MainThread:5367 [wandb_init.py:init():846] sending inform_init request
+2026-09-25 00:04:11,344 INFO    MainThread:5367 [wandb_init.py:init():851] backend started and connected
+2026-09-25 00:04:11,364 INFO    MainThread:5367 [wandb_init.py:init():921] updated telemetry
+2026-09-25 00:04:11,374 INFO    MainThread:5367 [wandb_init.py:init():944] communicating run to backend with 90.0 second timeout
+2026-09-25 00:04:11,379 INFO    MainThread:5367 [wandb_init.py:init():981] starting run threads in backend
+2026-09-25 00:04:11,537 INFO    MainThread:5367 [wandb_run.py:_console_start():2531] atexit reg
+2026-09-25 00:04:11,537 INFO    MainThread:5367 [wandb_run.py:_redirect():2381] redirect: wrap_raw
+2026-09-25 00:04:11,538 INFO    MainThread:5367 [wandb_run.py:_redirect():2450] Wrapping output streams.
+2026-09-25 00:04:11,538 INFO    MainThread:5367 [wandb_run.py:_redirect():2473] Redirects installed.
+2026-09-25 00:04:11,540 INFO    MainThread:5367 [wandb_init.py:init():1019] run started, returning control to user process
+2026-09-25 00:04:24,199 INFO    MainThread:5367 [wandb_run.py:_finish():2303] finishing run irene-mm-covidcxr/31x04dg6
+2026-09-25 00:04:24,199 INFO    MainThread:5367 [wandb_run.py:_atexit_cleanup():2498] got exitcode: 0
+2026-09-25 00:04:24,200 INFO    MainThread:5367 [wandb_run.py:_restore():2480] restore
+2026-09-25 00:04:24,200 INFO    MainThread:5367 [wandb_run.py:_restore():2486] restore done

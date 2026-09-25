@@ -1,0 +1,12 @@
+[irene_k2_rawtext] seed 0 fold 0: AUROC 0.7766 acc 0.783 epochs 20
+[irene_k2_rawtext] seed 0 fold 1: AUROC 0.8816 acc 0.756 epochs 23
+[irene_k2_rawtext] seed 0 fold 2: AUROC 0.7425 acc 0.705 epochs 23
+[irene_k2_rawtext] seed 0 fold 3: AUROC 0.7277 acc 0.641 epochs 9
+[irene_k2_rawtext] seed 0 fold 4: AUROC 0.7853 acc 0.764 epochs 24
+[irene_k2_rawtext] seed 0 pooled OOF macro AUROC 0.7853
+[irene_k2_rawtext] seed 1 fold 0: AUROC 0.8462 acc 0.713 epochs 21
+[irene_k2_rawtext] seed 1 fold 1: AUROC 0.8812 acc 0.705 epochs 20
+[irene_k2_rawtext] seed 1 fold 2: AUROC 0.7629 acc 0.724 epochs 16
+[irene_k2_rawtext] seed 1 fold 3: AUROC 0.8176 acc 0.763 epochs 22
+[irene_k2_rawtext] seed 1 fold 4: AUROC 0.7467 acc 0.643 epochs 11
+[irene_k2_rawtext] seed 1 pooled OOF macro AUROC 0.8020

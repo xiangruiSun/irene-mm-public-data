@@ -1,0 +1,12 @@
+[attn_none] seed 0 fold 0: AUROC 0.7371 acc 0.611 epochs 10
+[attn_none] seed 0 fold 1: AUROC 0.7412 acc 0.679 epochs 10
+[attn_none] seed 0 fold 2: AUROC 0.8196 acc 0.750 epochs 24
+[attn_none] seed 0 fold 3: AUROC 0.7957 acc 0.615 epochs 9
+[attn_none] seed 0 fold 4: AUROC 0.8401 acc 0.771 epochs 20
+[attn_none] seed 0 pooled OOF macro AUROC 0.7773
+[attn_none] seed 1 fold 0: AUROC 0.8152 acc 0.783 epochs 23
+[attn_none] seed 1 fold 1: AUROC 0.7758 acc 0.699 epochs 8
+[attn_none] seed 1 fold 2: AUROC 0.7728 acc 0.712 epochs 17
+[attn_none] seed 1 fold 3: AUROC 0.8477 acc 0.737 epochs 21
+[attn_none] seed 1 fold 4: AUROC 0.8050 acc 0.739 epochs 17
+[attn_none] seed 1 pooled OOF macro AUROC 0.7809

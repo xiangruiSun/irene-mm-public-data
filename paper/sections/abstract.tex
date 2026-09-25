@@ -1,0 +1,26 @@
+\begin{abstract}
+\noindent
+IRENE is a multimodal transformer for clinical diagnosis. It treats chest radiographs,
+unstructured clinical text and structured clinical data as token sequences and fuses them
+with bidirectional cross-modal attention. Its original evaluation used a private cohort,
+and the choices of where to fuse, how the modalities attend to each other and whether to
+add image--text contrastive learning were never isolated. We re-implement IRENE as a single
+configurable model (IRENE-MM) and study these choices on a fully public multimodal dataset:
+\NImages{} chest radiographs from \NPatients{} patients, each with a free-text clinical note,
+demographics, vitals and laboratory values, labelled with seven diagnoses. We describe a
+reproducible data pipeline for image--text--structured triplets that includes text cleaning,
+masking of diagnosis terms that leak the label, and patient-grouped cross-validation. We then
+run \NRuns{} configurations (\NFoldRuns{} fold-level trainings). Fusing all three modalities
+improves on every partial input (macro AUROC \AUC{late_fusion} for late fusion and \AUC{irene_k2}
+for IRENE, versus \AUC{txt_tab_only} for note + structured data and \AUC{img_only} for images
+alone); the gain is significant against images alone and borderline against note + structured
+data. IRENE's mid-level bidirectional attention matches early fusion, but cross-attention
+at every layer, or cross-attention without self-attention, is clearly worse
+(\AUC{irene_k6} and \AUC{attn_bi_cross}). A CLIP or SigLIP alignment objective does not help
+diagnosis at this scale. It hurts mid-fusion models (\AUC{clip_l0.5} with CLIP,
+$\lambda{=}0.5$) and is neutral for late fusion (\AUC{late_clip_l0.5}), which also gives the
+best cross-modal retrieval. Every model with fusion loses much of its accuracy when the note
+is missing at test time. Probing experiments show that the publication source of a case alone
+reaches \CL{source_only} AUROC, a strong confounder in public COVID-19 collections. We release
+the code, the per-run logs and this paper.
+\end{abstract}

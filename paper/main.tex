@@ -1,0 +1,40 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[letterpaper,margin=0.75in,columnsep=0.28in]{geometry}
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,positioning}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\setlist{itemsep=1pt,topsep=2pt,leftmargin=12pt}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{8pt plus 2pt minus 2pt}
+\input{numbers.tex}
+\makeatletter\newcommand{\tabinput}[1]{\@@input #1 }\makeatother
+
+\title{\vspace{-0.6cm}\Large\bfseries Where and How to Fuse: An Ablation Study of IRENE-Style\\Multimodal Transformers on Public Chest Radiograph, Clinical-Note\\and Structured Data\vspace{-0.2cm}}
+\author{Xiangrui Sun\\{\small\url{https://github.com/xiangruiSun/IRENE}}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract.tex}
+\input{sections/body.tex}
+
+{\small
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+}
+
+\appendix
+\input{sections/appendix.tex}
+\end{document}
